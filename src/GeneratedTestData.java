@@ -21,30 +21,20 @@ public class GeneratedTestData {
             case circle:
                 int increment = count/(count/2);
                 Point2D lastPoint = new Point2D(-1*count/2, 0);
-                points[0] = lastPoint;
-                for(int i = 1; i < count; i++) {
-                    if((lastPoint.getY() < 0 || lastPoint.getY() == 0) && (i < count/2)) {
-                        lastPoint = new Point2D(lastPoint.getX() + increment, -1*(lastPoint.getY()) + increment);
-                        points[i] = lastPoint;
-                    }
-                    else if((lastPoint.getY() < 0 || lastPoint.getY() == 0) && (i > count/2)) {
-                        lastPoint = new Point2D(lastPoint.getX() + increment, -1*(lastPoint.getY()) - increment);
-                        points[i] = lastPoint; //Not sure if this halving will work, need to test with odd counts
-                    }
-                    else {
-                        lastPoint = new Point2D(lastPoint.getX(), -1*(lastPoint.getY()));
-                        points[i] = lastPoint;
-                    }
+                int radius = count/2;
+                double degrees = 0;
+                for(int i = 0; i < count; i++) {
+                    points[i] = new Point2D(radius*Math.cos(degrees), radius*Math.sin(degrees));
+                    degrees += 360/count;
                 }
                 break;
             case random:
-                Random r = new Random();
                 int rangeMin = -1*(count/2), rangeMax = count/2;
                 int randomX = 0;
                 int randomY = 0;
                 for(int i = 0; i < count; i++) {
-                    randomX = rangeMin + (rangeMax - rangeMin) * r.nextInt();
-                    randomY = rangeMin + (rangeMax - rangeMin) * r.nextInt();
+                    randomX = rangeMin + (int)(Math.random() * ((rangeMax - rangeMin) + 1));
+                    randomY = rangeMin + (int)(Math.random() * ((rangeMax - rangeMin) + 1));
                     points[i] = new Point2D(randomX, randomY);
                 }
                 break;
