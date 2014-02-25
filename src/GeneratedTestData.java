@@ -41,6 +41,10 @@ public class GeneratedTestData {
         }
     }
 
+    public Point2D[] getPoints() {
+        return points;
+    }
+
     public String printArray(boolean output) {
         String total = "";
         for(int i = 0; i < points.length; i++) {

@@ -1,3 +1,5 @@
+import javafx.geometry.Point2D;
+
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.LinkedList;
@@ -20,6 +22,22 @@ public class ConvexHull {
         System.out.println(testSpeed(testNumbersList));
     }
 
+    public static LinkedList<Point2D> bruteForceConvexHull(Point2D points[]) {
+        LinkedList<Point2D> convexHull = new LinkedList<Point2D>();
+
+        //Implement algorithm, add convex hull points by convexHull.add(Point2D)
+
+        return convexHull;
+    }
+
+    public static LinkedList<Point2D> quickHull(Point2D points[]) {
+        LinkedList<Point2D> convexHull = new LinkedList<Point2D>();
+
+        //Implement algorithm, add convex hull points by convexHull.add(Point2D)
+
+        return convexHull;
+    }
+
 
 
     public static String testSpeed(LinkedList<TestNumbers> testNumbersList) {
@@ -30,25 +48,37 @@ public class ConvexHull {
             GeneratedTestData random = new GeneratedTestData(t.n, DataType.random);
 
             Timestamp lastTime = new Timestamp(new Date().getTime());
-
             for(int i = 0; i < t.timesToRun; i++) {
-                //Run brute force: replace with actual call
+                bruteForceConvexHull(circle.getPoints());
             }
-
             Timestamp time = new Timestamp(new Date().getTime());
             total += "Brute force took " + (time.getTime()-lastTime.getTime()) + " milliseconds to run " + t.timesToRun + " times " +
-                    "with n of size " + t.n + ", averaging " + ((time.getTime()-lastTime.getTime())/t.timesToRun) + " milliseconds.\n";
+                    "with n of size " + t.n + ", averaging " + ((time.getTime()-lastTime.getTime())/t.timesToRun) + " milliseconds with a circle as input.\n";
 
             lastTime = new Timestamp(new Date().getTime());
-
             for(int i = 0; i < t.timesToRun; i++) {
-                //Run quick hull: replace with actual call
+                bruteForceConvexHull(random.getPoints());
             }
+            time = new Timestamp(new Date().getTime());
+            total += "Brute force took " + (time.getTime()-lastTime.getTime()) + " milliseconds to run " + t.timesToRun + " times " +
+                    "with n of size " + t.n + ", averaging " + ((time.getTime()-lastTime.getTime())/t.timesToRun) + " milliseconds with random input.\n";
 
+
+            lastTime = new Timestamp(new Date().getTime());
+            for(int i = 0; i < t.timesToRun; i++) {
+                quickHull(circle.getPoints());
+            }
             time = new Timestamp(new Date().getTime());
             total += "Quick hull took " + (time.getTime()-lastTime.getTime()) + " milliseconds to run " + t.timesToRun + " times " +
-                    "with n of size " + t.n + ", averaging " + ((time.getTime()-lastTime.getTime())/t.timesToRun) + " milliseconds.\n\n";
+                    "with n of size " + t.n + ", averaging " + ((time.getTime()-lastTime.getTime())/t.timesToRun) + " milliseconds with a circle as input.\n";
 
+            lastTime = new Timestamp(new Date().getTime());
+            for(int i = 0; i < t.timesToRun; i++) {
+                quickHull(random.getPoints());
+            }
+            time = new Timestamp(new Date().getTime());
+            total += "Quick hull took " + (time.getTime()-lastTime.getTime()) + " milliseconds to run " + t.timesToRun + " times " +
+                    "with n of size " + t.n + ", averaging " + ((time.getTime()-lastTime.getTime())/t.timesToRun) + " milliseconds with random input.\n\n";
         }
 
         return total;
