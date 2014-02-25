@@ -20,6 +20,15 @@ public class ConvexHull {
 
         //This is how you run the speed tests
         System.out.println(testSpeed(testNumbersList));
+
+        //This is how you test for correctness
+        GeneratedTestData testDataCircle = new GeneratedTestData(100000, DataType.circle);
+        GeneratedTestData testDataRandom = new GeneratedTestData(100000, DataType.random);
+        System.out.println(TestCorrectness.test(testDataCircle.getPoints() , bruteForceConvexHull(testDataCircle.getPoints())));
+        System.out.println(TestCorrectness.test(testDataRandom.getPoints() , bruteForceConvexHull(testDataRandom.getPoints())));
+
+        System.out.println(TestCorrectness.test(testDataCircle.getPoints() , quickHull(testDataCircle.getPoints())));
+        System.out.println(TestCorrectness.test(testDataRandom.getPoints() , quickHull(testDataRandom.getPoints())));
     }
 
     public static LinkedList<Point2D> bruteForceConvexHull(Point2D points[]) {
