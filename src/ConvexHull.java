@@ -19,22 +19,52 @@ public class ConvexHull {
         testNumbersList.add(new TestNumbers(1000000,100000));
 
         //This is how you run the speed tests
-        System.out.println(testSpeed(testNumbersList));
+       // System.out.println(testSpeed(testNumbersList));
 
         //This is how you test for correctness
-        GeneratedTestData testDataCircle = new GeneratedTestData(100000, DataType.circle);
+        GeneratedTestData testDataCircle = new GeneratedTestData(8, DataType.circle);
         GeneratedTestData testDataRandom = new GeneratedTestData(100000, DataType.random);
         System.out.println(TestCorrectness.test(testDataCircle.getPoints() , bruteForceConvexHull(testDataCircle.getPoints())));
-        System.out.println(TestCorrectness.test(testDataRandom.getPoints() , bruteForceConvexHull(testDataRandom.getPoints())));
+        //System.out.println(TestCorrectness.test(testDataRandom.getPoints() , bruteForceConvexHull(testDataRandom.getPoints())));
 
-        System.out.println(TestCorrectness.test(testDataCircle.getPoints() , quickHull(testDataCircle.getPoints())));
-        System.out.println(TestCorrectness.test(testDataRandom.getPoints() , quickHull(testDataRandom.getPoints())));
+        //System.out.println(TestCorrectness.test(testDataCircle.getPoints() , quickHull(testDataCircle.getPoints())));
+        //System.out.println(TestCorrectness.test(testDataRandom.getPoints() , quickHull(testDataRandom.getPoints())));
     }
 
     public static LinkedList<Point2D> bruteForceConvexHull(Point2D points[]) {
         LinkedList<Point2D> convexHull = new LinkedList<Point2D>();
-
         //Implement algorithm, add convex hull points by convexHull.add(Point2D)
+        double curr_x_prod = 0, prev_x_prod = 0;
+        boolean on_hull = true;
+        for(Point2D a: points) {
+            for(Point2D b: points) {
+                for(Point2D c: points) {
+                    if(c != a && c != b) {
+                        curr_x_prod = ((b.getX() - a.getX())*(c.getY() - a.getY()) - (b.getY() - a.getY())*(c.getY() - a.getY()));
+                        if(curr_x_prod != prev_x_prod) {
+                            on_hull = false;
+                            break;
+                        }
+                        prev_x_prod = curr_x_prod;
+                    }
+                }
+                if(on_hull) {
+                    if(!convexHull.contains(a)) {
+                        convexHull.add(a);
+                    }
+                    if(!convexHull.contains(b)) {
+                        convexHull.add(b);
+                    }
+                }
+                else {
+                    on_hull = true;
+                }
+            }
+        }
+        for(Point2D point: points) {
+            System.out.print(point.toString());
+        }
+        System.out.println("\n\n" + convexHull.toString());
 
         return convexHull;
     }
