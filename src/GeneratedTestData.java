@@ -30,11 +30,11 @@ public class GeneratedTestData {
                 break;
             case random:
                 int rangeMin = -1*(count/2), rangeMax = count/2;
-                int randomX = 0;
-                int randomY = 0;
+                double randomX = 0;
+                double randomY = 0;
                 for(int i = 0; i < count; i++) {
-                    randomX = rangeMin + (int)(Math.random() * ((rangeMax - rangeMin) + 1));
-                    randomY = rangeMin + (int)(Math.random() * ((rangeMax - rangeMin) + 1));
+                    randomX = rangeMin + (Math.random() * ((rangeMax - rangeMin) + 1));
+                    randomY = rangeMin + (Math.random() * ((rangeMax - rangeMin) + 1));
                     points[i] = new Point2D(randomX, randomY);
                 }
                 break;

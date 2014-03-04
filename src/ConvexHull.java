@@ -22,10 +22,10 @@ public class ConvexHull {
        // System.out.println(testSpeed(testNumbersList));
 
         //This is how you test for correctness
-        GeneratedTestData testDataCircle = new GeneratedTestData(8, DataType.circle);
-        GeneratedTestData testDataRandom = new GeneratedTestData(100000, DataType.random);
+        GeneratedTestData testDataCircle = new GeneratedTestData(20, DataType.circle);
+        GeneratedTestData testDataRandom = new GeneratedTestData(20, DataType.random);
         System.out.println(TestCorrectness.test(testDataCircle.getPoints() , bruteForceConvexHull(testDataCircle.getPoints())));
-        //System.out.println(TestCorrectness.test(testDataRandom.getPoints() , bruteForceConvexHull(testDataRandom.getPoints())));
+        System.out.println(TestCorrectness.test(testDataRandom.getPoints() , bruteForceConvexHull(testDataRandom.getPoints())));
 
         //System.out.println(TestCorrectness.test(testDataCircle.getPoints() , quickHull(testDataCircle.getPoints())));
         //System.out.println(TestCorrectness.test(testDataRandom.getPoints() , quickHull(testDataRandom.getPoints())));
