@@ -78,6 +78,7 @@ def brute_force(points):
         boolean on_hull;
         for(Point2D a: points) {
             for(Point2D b: points) {
+                if(a != b) {
                 prev_x_prod = Math.PI;
                 on_hull = true;
                 for(Point2D c: points) {
@@ -86,11 +87,11 @@ def brute_force(points):
                         if(curr_x_prod > 0) {
                             curr_x_prod = 1;
                         }
-                        else if(curr_x_prod == 0) {
-                            curr_x_prod = 0;
+                        else if(curr_x_prod < 0) {
+                            curr_x_prod = -1;
                         }
                         else {
-                            curr_x_prod = -1;
+                            curr_x_prod = 0;
                         }
                         if (curr_x_prod == prev_x_prod || prev_x_prod == Math.PI || curr_x_prod == 0) {
                             prev_x_prod = curr_x_prod;
@@ -109,52 +110,30 @@ def brute_force(points):
                         convexHull.add(b);
                     }
                 }
+                }
             }
         }
-
-        for(Point2D point: points) {
-            System.out.print(point.toString());
-        }
-        System.out.println("\n\n" + convexHull.toString());
 
         return convexHull;
     }
     @Override public void start(Stage stage) {
         stage.setTitle("Scatter Chart Sample");
-        final NumberAxis xAxis = new NumberAxis(-10, 10, 1);
-        final NumberAxis yAxis = new NumberAxis(-10, 10, 1);
+        final NumberAxis xAxis = new NumberAxis(-100, 100, 1);
+        final NumberAxis yAxis = new NumberAxis(-100, 100, 1);
         final ScatterChart<Number,Number> sc = new
                 ScatterChart<Number,Number>(xAxis,yAxis);
         xAxis.setLabel("X-Axis");
         yAxis.setLabel("Y-Axis");
         sc.setTitle("Convex Hull Plot");
 
-        GeneratedTestData testDataRandom = new GeneratedTestData(12, DataType.random);
+        GeneratedTestData testDataRandom = new GeneratedTestData(70, DataType.random);
         LinkedList<Point2D> convexHull = bruteForceConvexHull(testDataRandom.getPoints());
 
         XYChart.Series series1 = new XYChart.Series();
         series1.setName("AllPoints");
         for(Point2D point: testDataRandom.getPoints()) {
-         series1.getData().add(new XYChart.Data(point.getX(), point.getY()));
+            series1.getData().add(new XYChart.Data(point.getX(), point.getY()));
         }
-        /*
-        series1.getData().add(new XYChart.Data(4.2, 193.2));
-        series1.getData().add(new XYChart.Data(2.8, 33.6));
-        series1.getData().add(new XYChart.Data(6.2, 24.8));
-        series1.getData().add(new XYChart.Data(1, 14));
-        series1.getData().add(new XYChart.Data(1.2, 26.4));
-        series1.getData().add(new XYChart.Data(4.4, 114.4));
-        series1.getData().add(new XYChart.Data(8.5, 323));
-        series1.getData().add(new XYChart.Data(6.9, 289.8));
-        series1.getData().add(new XYChart.Data(9.9, 287.1));
-        series1.getData().add(new XYChart.Data(0.9, -9));
-        series1.getData().add(new XYChart.Data(3.2, 150.8));
-        series1.getData().add(new XYChart.Data(4.8, 20.8));
-        series1.getData().add(new XYChart.Data(7.3, -42.3));
-        series1.getData().add(new XYChart.Data(1.8, 81.4));
-        series1.getData().add(new XYChart.Data(7.3, 110.3));
-        series1.getData().add(new XYChart.Data(2.7, 41.2));
-        */
 
         XYChart.Series series2 = new XYChart.Series();
         series2.setName("Hull Points");
@@ -162,43 +141,12 @@ def brute_force(points):
         for(Point2D point: convexHull) {
             series2.getData().add(new XYChart.Data(point.getX(), point.getY()));
         }
-        /*
-        series2.getData().add(new XYChart.Data(5.2, 229.2));
-        series2.getData().add(new XYChart.Data(2.4, 37.6));
-        series2.getData().add(new XYChart.Data(3.2, 49.8));
-        series2.getData().add(new XYChart.Data(1.8, 134));
-        series2.getData().add(new XYChart.Data(3.2, 236.2));
-        series2.getData().add(new XYChart.Data(7.4, 114.1));
-        series2.getData().add(new XYChart.Data(3.5, 323));
-        series2.getData().add(new XYChart.Data(9.3, 29.9));
-        series2.getData().add(new XYChart.Data(8.1, 287.4));
-        */
 
         sc.getData().addAll(series1, series2);
-        Scene scene  = new Scene(sc, 500, 400);
+        Scene scene  = new Scene(sc, 600, 600);
         stage.setScene(scene);
         stage.show();
     }
-    /*
-    Canvas canvas = new Canvas(300, 300);
-final GraphicsContext gc = canvas.getGraphicsContext2D();
-gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-
-gc.setFill(Color.BLACK);
-gc.setFont(Font.getDefault());
-gc.fillText("hello   world!", 15, 50);
-
-gc.setLineWidth(5);
-gc.setStroke(Color.PURPLE);
-
-gc.strokeOval(10, 60, 30, 30);
-gc.strokeOval(60, 60, 30, 30);
-gc.strokeRect(30, 100, 40, 40);
-
-root.getChildren().add(canvas);
-primaryStage.setScene(scene);
-primaryStage.show();
-     */
 
     public static LinkedList<Point2D> quickHull(Point2D points[]) {
         LinkedList<Point2D> convexHull = new LinkedList<Point2D>();
