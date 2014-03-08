@@ -24,7 +24,8 @@ public class TestCorrectness {
 
         for(Point2D current: points) {
             totalCorrectness = totalCorrectness && cHull.contains(current.getX(), current.getY());
-            System.out.println(cHull.contains(current.getX(), current.getY()) + " " + current.getX() + " " + current.getY());
+            System.out.println(cHull.contains(current.getX(), current.getY())
+                    + " " + current.getX() + " " + current.getY());
         }
 
         return totalCorrectness;
@@ -101,9 +102,11 @@ public class TestCorrectness {
         circularArray[currentPosition] = left;
         currentPosition++;
         for(Point2D current: cHull) {
-            if(current.getX() > left.getX() && current.getX() < top.getX() && current.getY() > left.getY() && current.getY() < top.getY())
+            if(current.getX() > left.getX() && current.getX() < top.getX()
+                    && current.getY() > left.getY() && current.getY() < top.getY())
                 subList.add(current);
-            else if(current.getX() > top.getX() && current.getX() < right.getX() && current.getY() < top.getY() && current.getY() > right.getY())
+            else if(current.getX() > top.getX() && current.getX() < right.getX()
+                    && current.getY() < top.getY() && current.getY() > right.getY())
                 subList.add(current);
         }
         if(left != top && right != top)
