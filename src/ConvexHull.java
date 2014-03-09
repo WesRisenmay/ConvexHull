@@ -1,7 +1,9 @@
 import javafx.geometry.Point2D;
 
 import java.awt.*;
+import java.lang.reflect.Array;
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 import javafx.application.Application;
@@ -18,6 +20,9 @@ import javafx.stage.Stage;
 
 
 public class ConvexHull extends Application {
+
+    private LinkedList<Point2D> q_hull = new LinkedList<Point2D>(); //required for quickhull algorithm
+
     public static void main(String args[]) {
         //This is how you create a list of test data to be run
         LinkedList<TestNumbers> testNumbersList = new LinkedList<TestNumbers>();
@@ -43,34 +48,7 @@ public class ConvexHull extends Application {
         launch(args);
     }
 
-/*
-def brute_force(points):
-    convex_hull = []
-    for pt_a in points:
-        for pt_b in points:
-            on_hull = True
-            prev_cross_prod = None
-            if pt_a != pt_b:
-                for pt_c in points:
-                    if pt_c != pt_a and pt_c != pt_b:
-                        v1 = [pt_a[0] - pt_b[0], pt_a[1] - pt_b[1]]
-                        v2 = [pt_b[0] - pt_c[0], pt_b[1] - pt_c[1]]
-                        cross_prod = v1[0]*v2[1] - v2[0]*v1[1]
-                        if cross_prod > 0:
-                            cross_prod = 1
-                        else:
-                            cross_prod = -1
-                        if cross_prod == prev_cross_prod or type(prev_cross_prod) is type(None) or abs(cross_prod) == 0:
-                            prev_cross_prod = cross_prod
-                        else:
-                            on_hull = False
-                            break
-                if on_hull and (pt_a not in convex_hull):
-                    convex_hull.append(pt_a)
-                if on_hull and (pt_b not in convex_hull):
-                    convex_hull.append(pt_b)
-    return convex_hull
- */
+
     public static LinkedList<Point2D> bruteForceConvexHull(Point2D points[]) {
         LinkedList<Point2D> convexHull = new LinkedList<Point2D>();
 
@@ -118,16 +96,17 @@ def brute_force(points):
     }
     @Override public void start(Stage stage) {
         stage.setTitle("Scatter Chart Sample");
-        final NumberAxis xAxis = new NumberAxis(-100, 100, 1);
-        final NumberAxis yAxis = new NumberAxis(-100, 100, 1);
+        final NumberAxis xAxis = new NumberAxis(-22, 22, 1);
+        final NumberAxis yAxis = new NumberAxis(-22, 22, 1);
         final ScatterChart<Number,Number> sc = new
                 ScatterChart<Number,Number>(xAxis,yAxis);
         xAxis.setLabel("X-Axis");
         yAxis.setLabel("Y-Axis");
         sc.setTitle("Convex Hull Plot");
 
-        GeneratedTestData testDataRandom = new GeneratedTestData(70, DataType.random);
-        LinkedList<Point2D> convexHull = bruteForceConvexHull(testDataRandom.getPoints());
+        GeneratedTestData testDataRandom = new GeneratedTestData(20, DataType.random);
+        //LinkedList<Point2D> convexHull = bruteForceConvexHull(testDataRandom.getPoints());
+        quickHull(testDataRandom.getPoints());
 
         XYChart.Series series1 = new XYChart.Series();
         series1.setName("AllPoints");
@@ -138,7 +117,7 @@ def brute_force(points):
         XYChart.Series series2 = new XYChart.Series();
         series2.setName("Hull Points");
 
-        for(Point2D point: convexHull) {
+        for(Point2D point: q_hull) {
             series2.getData().add(new XYChart.Data(point.getX(), point.getY()));
         }
 
@@ -148,17 +127,118 @@ def brute_force(points):
         stage.show();
     }
 
-    public static LinkedList<Point2D> quickHull(Point2D points[]) {
-        LinkedList<Point2D> convexHull = new LinkedList<Point2D>();
 
-        //Implement algorithm, add convex hull points by convexHull.add(Point2D)
-
-        return convexHull;
+    private Point2D [] max_min(Point2D generated_points[]) {
+        Point2D[] min_max = new Point2D[2];
+        Point2D min_x_pt = generated_points[0];
+        Point2D max_x_pt = generated_points[0];
+        for(Point2D pt: generated_points) {
+            if(pt.getX() > max_x_pt.getX()) {
+                max_x_pt = pt;
+            }
+            else if(pt.getX() < min_x_pt.getX()) {
+                min_x_pt = pt;
+            }
+        }
+        min_max[0] = min_x_pt;
+        min_max[1] = max_x_pt;
+        return min_max;
     }
 
+    private double get_determinant(Point2D a,Point2D b,Point2D c) {
+        //x1y2 + x3y1 + x2y3 - x3y2 -x3y1 -x1y3
+        double det = a.getX()*b.getY() + c.getX()*a.getY() + b.getX()*c.getY() - c.getX()*b.getY() - b.getX()*a.getY() - a.getX()*c.getY();
+        return det;
+    }
 
+    private LinkedList<Point2D> get_subset(Point2D[] edge, LinkedList<Point2D> point_set, int side) {
+        LinkedList<Point2D> subset = new LinkedList<Point2D>();
+        double curr_side;
+        for(Point2D pt: point_set) {
+            curr_side = get_determinant(edge[0], edge[1], pt);
+            if(pt != edge[0] && pt != edge[1]) {
+                if(side > 0 && curr_side > 0) {
+                    subset.add(pt);
+                }
+                if(side < 0 && curr_side < 0) {
+                    subset.add(pt);
+                }
+                if(Math.abs(curr_side) == 0) {
+                    subset.add(pt);
+                }
+            }
+        }
+        return subset;
+    }
 
-    public static String testSpeed(LinkedList<TestNumbers> testNumbersList) {
+    private Point2D get_pivot_point(Point2D[] edge, LinkedList<Point2D> subset) {
+        double max_distance = 0, curr_distance;
+        Point2D pivot_point = new Point2D(Math.PI, Math.PI);
+        for(Point2D pt: subset) {
+            curr_distance = Math.abs(get_determinant(edge[0], edge[1], pt));
+            if((curr_distance > max_distance || curr_distance == 0) && !q_hull.contains(pt)) {
+                max_distance = curr_distance;
+                pivot_point = pt;
+            }
+        }
+        return pivot_point;
+    }
+
+    private void dome(Point2D[] edge, LinkedList<Point2D> point_set, boolean upper) {
+        Point2D pivot;
+        Point2D[] right_edge = new Point2D[2];
+        Point2D[] left_edge = new Point2D[2];
+        LinkedList<Point2D> right_subset;
+        LinkedList<Point2D> left_subset;
+
+        if(point_set.size() > 0) {
+            pivot = get_pivot_point(edge, point_set);
+            if(pivot.getX() != Math.PI && pivot.getY() != Math.PI) {
+                q_hull.add(pivot);
+                if( edge[0].getX() > edge[1].getX()) {
+                    right_edge[0] = pivot;
+                    right_edge[1] = edge[0];
+                    left_edge[0] = pivot;
+                    left_edge[1] = edge[1];
+                }
+                else {
+                    right_edge[0] = pivot;
+                    right_edge[1] = edge[1];
+                    left_edge[0] = pivot;
+                    left_edge[1] = edge[0];
+                }
+                if(upper) {
+                    right_subset = get_subset(right_edge, point_set, 1);
+                    left_subset = get_subset(left_edge, point_set, -1);
+                }
+                else {
+                    right_subset = get_subset(right_edge, point_set, -1);
+                    left_subset = get_subset(left_edge, point_set, 1);
+                }
+                if(right_subset.size() > 0) {
+                    dome(right_edge, right_subset, upper);
+                }
+                if(left_subset.size() > 0) {
+                    dome(left_edge, left_subset, upper);
+                }
+            }
+        }
+    }
+
+    public void quickHull(Point2D points[]) {
+        LinkedList<Point2D> generated_points = new LinkedList<Point2D>(Arrays.asList(points));
+        Point2D[] base_edge = max_min(points);
+        LinkedList<Point2D> upper_hull = get_subset(base_edge, generated_points, 1);
+        LinkedList<Point2D> lower_hull = get_subset(base_edge, generated_points, -1);
+
+        q_hull.add(base_edge[0]);
+        q_hull.add(base_edge[1]);
+
+        dome(base_edge, upper_hull, true);
+        dome(base_edge, lower_hull, false);
+    }
+
+    public String testSpeed(LinkedList<TestNumbers> testNumbersList) {
         String total = "";
         for(TestNumbers t: testNumbersList) {
             //Generate Data
