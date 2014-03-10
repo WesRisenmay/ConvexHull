@@ -21,20 +21,25 @@ import javafx.stage.Stage;
 
 public class ConvexHull extends Application {
 
+    public ConvexHull() {
+
+    }
+
     private LinkedList<Point2D> q_hull = new LinkedList<Point2D>(); //required for quickhull algorithm
 
     public static void main(String args[]) {
         //This is how you create a list of test data to be run
         LinkedList<TestNumbers> testNumbersList = new LinkedList<TestNumbers>();
         testNumbersList.add(new TestNumbers(10,2000000));
-        testNumbersList.add(new TestNumbers(100,2500000));
-        testNumbersList.add(new TestNumbers(1000,1200000));
-        testNumbersList.add(new TestNumbers(10000,600000));
-        testNumbersList.add(new TestNumbers(100000,300000));
-        testNumbersList.add(new TestNumbers(1000000,100000));
+        //testNumbersList.add(new TestNumbers(100,2500000));
+        //testNumbersList.add(new TestNumbers(1000,1200000));
+        //testNumbersList.add(new TestNumbers(10000,600000));
+        //testNumbersList.add(new TestNumbers(100000,300000));
+        //testNumbersList.add(new TestNumbers(1000000,100000));
 
         //This is how you run the speed tests
-       // System.out.println(testSpeed(testNumbersList));
+        ConvexHull hull = new ConvexHull();
+        System.out.println(hull.testSpeed(testNumbersList));
 
         //This is how you test for correctness
         //GeneratedTestData testDataCircle = new GeneratedTestData(20, DataType.circle);
@@ -45,7 +50,7 @@ public class ConvexHull extends Application {
 
         //System.out.println(TestCorrectness.test(testDataCircle.getPoints() , quickHull(testDataCircle.getPoints())));
         //System.out.println(TestCorrectness.test(testDataRandom.getPoints() , quickHull(testDataRandom.getPoints())));
-        launch(args);
+        //launch(args);
     }
 
 
@@ -104,7 +109,7 @@ public class ConvexHull extends Application {
         yAxis.setLabel("Y-Axis");
         sc.setTitle("Convex Hull Plot");
 
-        GeneratedTestData testDataRandom = new GeneratedTestData(20, DataType.random);
+        GeneratedTestData testDataRandom = new GeneratedTestData(40, DataType.random);
         //LinkedList<Point2D> convexHull = bruteForceConvexHull(testDataRandom.getPoints());
         quickHull(testDataRandom.getPoints());
 
