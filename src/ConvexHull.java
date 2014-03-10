@@ -25,7 +25,7 @@ public class ConvexHull extends Application {
 
     }
 
-    private LinkedList<Point2D> q_hull = new LinkedList<Point2D>(); //required for quickhull algorithm
+    private LinkedList<Point2D> q_hull;//required for quickhull algorithm
 
     public static void main(String args[]) {
         //This is how you create a list of test data to be run
@@ -235,6 +235,7 @@ public class ConvexHull extends Application {
         Point2D[] base_edge = max_min(points);
         LinkedList<Point2D> upper_hull = get_subset(base_edge, generated_points, 1);
         LinkedList<Point2D> lower_hull = get_subset(base_edge, generated_points, -1);
+        q_hull = new LinkedList<Point2D>();
 
         q_hull.add(base_edge[0]);
         q_hull.add(base_edge[1]);
