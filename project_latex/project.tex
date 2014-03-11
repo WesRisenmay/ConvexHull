@@ -1,59 +1,49 @@
-\documentclass[a4paper , 12pt]{article}
+\documentclass{article}
 \usepackage{amsmath, amsthm, amssymb, bm}
 \usepackage{graphicx}
-\usepackage[letterpaper, left=2cm,right=3cm,top=1.5cm,bottom=1.5cm]{geometry}
+%\usepackage[letterpaper, left=2cm,right=3cm,top=1.5cm,bottom=1.5cm]{geometry}
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
 
+\renewcommand{\labelenumi}{\alph{enumi}.} % Make numbering in the enumerate environment by letter rather than number (e.g. section 6)
 \begin{document}
 \input{./title_sheet.tex}
 {
+  \section{Objective}
 
-\begin{enumerate}
-\item
-  \textbf{Topic: Convex Hull Problem (Brute Force vs. Quickhull Algorithms)}
+  \section{Algorithm Explaination And Implementation}
+  \subsection{ConvexHull Explaination}
+  \subsection{Brute Force}
+  \subsection{QuickHull}
+  \section{Analysis of Complexity}
+  \subsection{Brute Force}
+  \subsection{QuickHull}
+  \subsection{Expected Outcome}
+  \section{Automated Testing}
+  \subsection{Algorithm Correctness}
+  \subsection{Data Generation}
+  \subsection{Timing Execution}
+  \section{Results}
+  \section{Conclusion}
 
-Since Convex Hull problems are modeling a physical system it should be really interesting and educational to create visualizations of exactly how the two algorithms work. Also we've spent a lot of time in class learning about sorting algorithms and data structures were well covered earlier in our academic careers. 
-   
-\item
-  \textbf{Language: Java}
 
-Java as a language for implementing the algorithms seems natural since both of us have development environments and are familiar with it.  Also there are tons of libraries and resources for automated testing as well as visualization. 
-\item
-  \textbf{Features}:
-  \begin{enumerate}
-    \item Description of both algorithms, along with worked examples for very small $n$.
-    \item Source code for implementation of algorithms.
-    \item Description of automated testing. 
-      \begin{enumerate}
-        \item
-          Check for correctness of algorithms against known implementations.
-        \item
-          Generation of input data.
-        \item
-          Time efficiency for varied values of $n$
-      \end{enumerate}
-    \item Analysis of complexity.
-      \begin{enumerate}
-        \item
-          Exploration of cases where brute force may be faster than quick hull.
-      \end{enumerate}
-    \item Results.
-      \begin{enumerate}
-        \item
-          Expected vs. actual results.
-        \item
-          Explanation of any discrepancies.
-        \end{enumerate}
-    \item Implementation challenges along with what we learned.
-  \end{enumerate}
-\item
-  \textbf{Collaboration Plan}
-  \begin{enumerate}
-    \item
-      Weekly meetings Tuesdays after class to pair program. 
-    \item
-      Coordination of source code and report text via public github repository. 
-    \item
-      Work independently and teleconference meetings as necessary.  
-  \end{enumerate}
-\end{enumerate}
+  % If you have more than one objective, uncomment the below:
+  %\begin{description}
+  %\item[First Objective] \hfill \\
+  %Objective 1 text
+  %\item[Second Objective] \hfill \\
+  %Objective 2 text
+  %\end{description}
+
+
+  %----------------------------------------------------------------------------------------
+  % BIBLIOGRAPHY
+  %----------------------------------------------------------------------------------------
+
+  \bibliographystyle{unsrt}
+
+  \bibliography{sample}
+
+  %----------------------------------------------------------------------------------------
+
+
 \end{document}
