@@ -2,6 +2,7 @@
 \usepackage{amsmath, amsthm, amssymb, bm}
 \usepackage{graphicx}
 \usepackage{makeidx}
+\usepackage{float}
 \makeidx
 \setlength\parindent{0pt} % Removes all indentation from paragraphs
 
@@ -9,6 +10,7 @@
 \begin{document}
 \input{./title_sheet.tex}
 \tableofcontents{}
+\vspace{10cm}
 {
   \section{Objective}
   \section{ConvexHull Overview}
@@ -18,11 +20,11 @@
   \section{Algorithm Implementation}
   \subsection{Brute Force}
   As the name implies the brute force solution to the convexhule problem is very straight forward, as shown below in Figure ~\ref{fig:bruteforce}.
-  \begin{figure}
+  \begin{figure}[H]
     \includegraphics[width=16cm,height=17cm]{bruteforce.png}
     \caption{Brute Force Convex Hull}
     \label{fig:bruteforce}
-\end{figure}
+  \end{figure} 
   \subsection{QuickHull}
   \section{Analysis of Complexity}
   \subsection{Brute Force}
@@ -30,8 +32,23 @@
   \subsection{Expected Outcome}
   \section{Automated Testing}
   \subsection{Algorithm Correctness}
+  When deciding on a strategy to test the correctness of our algorithm we had a few key criteria. We wanted to avoid repeating the steps used in our algorithms, we wanted to be able to use double precision so that we could test for correctness with circular data, and we wanted to use some well tested java libraries. These criteria brought us to the Polygon.contains method in the java.awt library, but the contains method only works on integers, and this would disable our ability to correctly test convex hulls that are in the shape of a circle. We then discovered the Path2D library which supports double precision and has a contains method. The challenge with using the Path2D library comes in building the convex hull. Building the hull requires adding points in the correct order so that each point you add draws the correct line as it would look in the given convex hull. In order to solve this problem we had to sort the convex hull in a circular way so that the path could be drawn clockwise around the convex hull.
+  \begin{figure}[H]
+    \includegraphics[width=14cm,height=11cm]{correctness_1.png}
+    \caption{Circular Case}
+    \label{fig:correctness_1}
+  \end{figure} 
+  The code above shows the algorithm for building an array that can be used to draw the convex hull clockwise. First we add the left most point of the convex hull in the first position of the circular array. We start with the left, right, top, and bottom points of the convex hull available, and we use those to add the top left and top right portions of the convex hull to a linked list. We then find the left most element of the list and place it into the next available position of the circular array while removing it from the list. We repeat that step until the list is empty, and add the right point to the next available position. A similar strategy is used to add the bottom portion of the convex hull to the circular array, but the loop portion adds the right most point to the array to continue adding points in the clockwise direction. The code below shows the construction of the convex hull using the Path2D cHull. The path starts with the left most point contained in the first position of the circular array. The rest of the list is iterated through and lines are drawn to each consecutive point. A line is then drawn from the final point in the array to the first point added using the closePath method. With the convex hull drawn we are able to iterate through all the points and make sure each point is contained in the convex hull.
+  \begin{figure}[H]
+    \includegraphics[width=14cm,height=7cm]{correctness_2.png}
+    \caption{Circular Correctness Test}
+    \label{fig:correctness_2}
+  \end{figure} 
+
+
   \subsection{Data Generation}
-  \subsection{Timing Execution}
+  In order to accurately assess the efficiency of our algorithms we came up with two different ways to generate test data: circular points and random points. When given circular points the efficiency of quick hull should decrease significantly, because each time it draws a triangle and searches for points inside the triangle it will find nothing, so the convex hull would be the entire set of points. The random data generated would give closer to average case efficiency, because usually provided points would be closer to random distribution. In order to generate a circular set of points the function below received a count of how many points need to be generated. At the start of the loop degrees is set to 0, and is incremented by 360 divided by the total number of points so that the data will be distributed well around the circle. Each point is given an x value of the radius multiplied by the cos of the current value of degrees, and the y value is generated using the sin function. The random data is generated point by point and uses the Math.random function.
+
   \section{Results}
   \section{Conclusion}
 
