@@ -1,18 +1,28 @@
 \documentclass{article}
 \usepackage{amsmath, amsthm, amssymb, bm}
 \usepackage{graphicx}
-%\usepackage[letterpaper, left=2cm,right=3cm,top=1.5cm,bottom=1.5cm]{geometry}
+\usepackage{makeidx}
+\makeidx
 \setlength\parindent{0pt} % Removes all indentation from paragraphs
 
 \renewcommand{\labelenumi}{\alph{enumi}.} % Make numbering in the enumerate environment by letter rather than number (e.g. section 6)
 \begin{document}
 \input{./title_sheet.tex}
+\tableofcontents{}
 {
   \section{Objective}
-
-  \section{Algorithm Explaination And Implementation}
-  \subsection{ConvexHull Explaination}
+  \section{ConvexHull Overview}
+  \section{Algorithm Explaination}
   \subsection{Brute Force}
+  \subsection{QuickHull}
+  \section{Algorithm Implementation}
+  \subsection{Brute Force}
+  As the name implies the brute force solution to the convexhule problem is very straight forward, as shown below in Figure ~\ref{fig:bruteforce}.
+  \begin{figure}
+    \includegraphics[width=16cm,height=17cm]{bruteforce.png}
+    \caption{Brute Force Convex Hull}
+    \label{fig:bruteforce}
+\end{figure}
   \subsection{QuickHull}
   \section{Analysis of Complexity}
   \subsection{Brute Force}
@@ -25,14 +35,6 @@
   \section{Results}
   \section{Conclusion}
 
-
-  % If you have more than one objective, uncomment the below:
-  %\begin{description}
-  %\item[First Objective] \hfill \\
-  %Objective 1 text
-  %\item[Second Objective] \hfill \\
-  %Objective 2 text
-  %\end{description}
 
 
   %----------------------------------------------------------------------------------------
