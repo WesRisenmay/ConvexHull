@@ -3,6 +3,7 @@
 \usepackage{graphicx}
 \usepackage{makeidx}
 \usepackage{float}
+\usepackage[top=2in, bottom=1.5in, left=1in, right=1in]{geometry}
 \makeidx
 \setlength\parindent{0pt} % Removes all indentation from paragraphs
 
@@ -60,7 +61,7 @@ It's important to note that the calculations above do not take into account case
     &\bm{\Theta(n\log(n))} &&\text{[since $a=b^1$]} \\
   \end{align*}
 \end{center}
-\textbf{Worst Case (Recursion Relation)} 
+\textbf{Worst Case (Backward Substitution)} 
 \begin{center}
   \begin{align*}
     T(n) &= T(n-1) + c\cdot n &&\text{[all points on one side of pivot]} \\
@@ -80,6 +81,11 @@ It's important to note that the calculations above do not take into account case
 \end{center}
 
   \subsection{Expected Outcome}
+  \begin{figure}[H]
+    \includegraphics[width=14cm,height=11cm]{analysis_plot.png}
+    \caption{Time Efficiency Analysis}
+    \label{fig:time_plot}
+  \end{figure} 
   \section{Automated Testing}
   \subsection{Algorithm Correctness}
   When deciding on a strategy to test the correctness of our algorithm we had a few key criteria. We wanted to avoid repeating the steps used in our algorithms, we wanted to be able to use double precision so that we could test for correctness with circular data, and we wanted to use some well tested java libraries. These criteria brought us to the Polygon.contains method in the java.awt library, but the contains method only works on integers, and this would disable our ability to correctly test convex hulls that are in the shape of a circle. We then discovered the Path2D library which supports double precision and has a contains method. The challenge with using the Path2D library comes in building the convex hull. Building the hull requires adding points in the correct order so that each point you add draws the correct line as it would look in the given convex hull. In order to solve this problem we had to sort the convex hull in a circular way so that the path could be drawn clockwise around the convex hull.
