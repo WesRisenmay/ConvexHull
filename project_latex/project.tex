@@ -14,9 +14,9 @@
 \vspace{10cm}
 {
   \section{Objective}
-The purpose of this paper is to compare convex hull algorithms specifically, brute force vs. QuickHull.  Our comparison will consist of an analytic time efficiency analysis of the two algorithms followed by actual timing of the algorithms for the same input data. We'll conclude with an explaination of how our predicitions compared to the data.   
+The purpose of this paper is to compare convex hull algorithms, specifically brute force vs. QuickHull.  Our comparison will consist of an analytic time efficiency analysis of the two algorithms followed by actual timing of the algorithms for the same input data. We'll conclude with an explanation of how our predictions compared to the data.   
   \section{ConvexHull Overview}
-  Given a set of points in the XY plane, imagine stretching a rubber band around the set. All of the points that the rubber band touchs are on the convex hull \textit{[Levitin pg.110]}.  
+  Given a set of points in the XY plane, imagine stretching a rubber band around the set. All of the points that the rubber band touches are on the convex hull \textit{[Levitin pg.110]}.  
   \begin{figure}[H]
     \begin{center}
     \includegraphics[width=4cm,height=4cm]{rubber_band.png}
@@ -25,9 +25,9 @@ The purpose of this paper is to compare convex hull algorithms specifically, bru
     \label{fig:rubber_band}
   \end{figure} 
   Finding the convex hull of a given set ends up being critical in a bunch of different areas, from computer vision to Geographic Information Systems to CAD applications \textit{[Levitin pg.110]}
-  \section{Algorithm Explaination}
+  \section{Algorithm Explanation}
   \subsection{Brute Force}
-The brute force approach to finding the convex hull of a set of points is to use 3 nested loops.  The two outer loops get a point(a) and point(b) which form a line.  The inner loop than calculates the determinant of of the two points which make up the line with a third point(c).  If two of the "c" points are ever on opposite sides of the line (determinant has different sign) than we know line(a-b) can't be on the hull and we move on.   
+The brute force approach to finding the convex hull of a set of points is to use 3 nested loops.  The two outer loops get a point(a) and point(b) which form a line.  The inner loop than calculates the determinant of the two points which make up the line with a third point(c).  If two of the "c" points are ever on opposite sides of the line (determinant has different sign) than we know line(a-b) can't be on the hull and we move on.   
   \begin{figure}[H]
   \begin{center}
     \includegraphics[width=4cm,height=4cm]{BF_1.png}
@@ -35,9 +35,9 @@ The brute force approach to finding the convex hull of a set of points is to use
 \caption{Brute Force Example}
     \label{fig:bf_1}
   \end{figure} 
-In the above diagram our the line we're testing would be from A-B. First AxBx1 would be calculated, then AxBx2 would be compared to the first determinant they're the same so the algorithm would continue until AxBx4 is reached. Since the sign of this last determinant does not match the other the line A-B is not on the hull and we can move on to the text the next line.
+In the above diagram the line being tested if from point A to point B. First AxBx1 would be calculated, then AxBx2 would be compared to the first determinant they're the same so the algorithm would continue until AxBx4 is reached. Since the sign of this last determinant does not match the other the line A-B is not on the hull and we can move on to the text the next line.
   \subsection{QuickHull}
-  The QuickHull approach is both more elegant and more performant. (1) Find furthest left and right points A,B in the figure below. These two points are guaranteed to be on the hull.  (2) Split the remaining points into two subsets above/below the base edge. (3a) The recursive step starts by finding the furthest point from the base edge, in the below figure it's labeled "Pivot" for the top subset. (3b) Now divide the current set of points into two subsets consisting of points to the right of the line from Pivot->B and points to the left of the line from Pivot->A. (3c) Now call the recursive function twice again, once for the base edge Pivot->B with the associated subset and ponce for the base edge Pivot->A for the associated subset. If there are not points in a subset then stop the recursion. 
+  The QuickHull approach is both more elegant and more performant. (1) Find furthest left and right points A,B in the figure below. These two points are guaranteed to be on the hull.  (2) Split the remaining points into two subsets above/below the base edge. (3a) The recursive step starts by finding the furthest point from the base edge, in the below figure it's labeled "Pivot" for the top subset. (3b) Now divide the current set of points into two subsets consisting of points to the right of the line from Pivot to B and points to the left of the line from Pivot to A. (3c) Now call the recursive function twice again, once for the base edge Pivot to B with the associated subset and once for the base edge Pivot to A for the associated subset. If there are not points in a subset then stop the recursion. 
   \begin{figure}[H]
   \begin{center}
     \includegraphics[width=5cm,height=5cm]{qh_1.png}
@@ -48,7 +48,7 @@ In the above diagram our the line we're testing would be from A-B. First AxBx1 w
   \section{Algorithm Implementation}
   \subsection{Brute Force}
 
-  Our implementation for the brute force algorithm is shown in figure ~\ref{fig:bruteforce} below. There weren't any real issues getting it to work and it's fairly self explainitory.
+  Our implementation for the brute force algorithm is shown in figure ~\ref{fig:bruteforce} below. There weren't any real issues getting it to work and it's fairly self explanatory.
   \begin{figure}[H]
   \begin{center}
     \includegraphics[width=16cm,height=16cm]{bruteforce.png}
@@ -57,7 +57,7 @@ In the above diagram our the line we're testing would be from A-B. First AxBx1 w
     \label{fig:bruteforce}
   \end{figure} 
   \subsection{QuickHull}
- The implementation of QuickHull on the other hand ended up being very time consuming, mainly due to the difficulties inherint in debugging recusive code.  
+ The implementation of QuickHull on the other hand ended up being very time consuming, mainly due to the difficulties inherent in debugging recursive code.  
   \begin{figure}[H]
   \begin{center}
     \includegraphics[width=9cm,height=6cm]{min_max.png}
@@ -84,7 +84,7 @@ In the above diagram our the line we're testing would be from A-B. First AxBx1 w
     \caption{Get The Pivot Point}
     \label{fig:get_pivot}
   \end{figure}
-  Given a subset of points we need to find the pivot (furthest point from the base edge). This ends up being pretty straight forward since we already have a method to calculate the determinant, this can be repurposed in order to get the distance along a normal vector from the base edge to each point in the current set.  
+  Given a subset of points we need to find the pivot (furthest point from the base edge). This ends up being pretty straight forward since we already have a method to calculate the determinant, this can be re-purposed in order to get the distance along a normal vector from the base edge to each point in the current set.  
 
 
   \begin{figure}[H]
@@ -94,7 +94,7 @@ In the above diagram our the line we're testing would be from A-B. First AxBx1 w
     \caption{Get The Resulting Subset}
     \label{fig:get_subset}
   \end{figure}
-One of the keys to getting QuickHull to work was figuring out which of the points in a given subset should be used to create the next subsets for the recursive call.  This is again accomplished by looping through the remaining points and calling the determinanat method on each point, points to the right of a line on the upper right side of the pivot will have a positive determinant, points on the upper left side a negative determinant.  For the lower hull these values are swithced.
+One of the keys to getting QuickHull to work was figuring out which of the points in a given subset should be used to create the next subsets for the recursive call.  This is again accomplished by looping through the remaining points and calling the determinant method on each point, points to the right of a line on the upper right side of the pivot will have a positive determinant, points on the upper left side a negative determinant.  For the lower hull these values are switched.
 
   \begin{figure}[H]
   \begin{center}
@@ -104,7 +104,7 @@ One of the keys to getting QuickHull to work was figuring out which of the point
     \label{fig:dome}
   \end{figure}
 
-The heart of this implementation of QuickHull is the recursive dome method. It taked the current edge, set of points and a flag indicating if the current subset is int he upper or lower hull. Next we find the pivot point and figure out if the resulting edges are on the left or the right side of the calling edge. and finally if there are any points in the new resulting subsets we can either call the dome function again or stop the recursion. 
+The heart of this implementation of QuickHull is the recursive dome method. It takes the current edge, set of points and a flag indicating if the current subset is in the upper or lower hull. Next we find the pivot point and figure out if the resulting edges are on the left or the right side of the calling edge. Finally if there are any points in the new resulting subsets we can either call the dome function again or stop the recursion. 
 
   \begin{figure}[H]
   \begin{center}
@@ -114,7 +114,7 @@ The heart of this implementation of QuickHull is the recursive dome method. It t
     \label{fig:quickhull}
   \end{figure}
 
-  The final component of this QuickHull implementation is the above initialization function appropriately called quickhull.  As mentioned earlier we need to first find the furthest left and right points then proceed to divide the whole set into upper and lower subsets and finally make the calls to the recursive dome function with the appropriate point sets and flag. 
+  The final component of this QuickHull implementation is the above initialization function, appropriately called quickhull.  As mentioned earlier we need to first find the furthest left and right points, then proceed to divide the whole set into upper and lower subsets, and finally make the calls to the recursive dome function with the appropriate point subsets and upper/lower flag. 
 
   \section{Analysis of Time Complexity}
   \subsection{Brute Force}
@@ -130,15 +130,15 @@ The heart of this implementation of QuickHull is the recursive dome method. It t
            &\bm{O(n^3)}
     \end{align*}
   \end{center}
-It's important to note that the calculations above do not take into account cases where we're able to break out of the inner loop early when we find points on either side of the line that is being tested.  This means that specific arrangement of points we get as input will play a role in how quickly the algorithm completes.  The best case should be a situation in which the points are completly random, we would quickly find a point that is not on the same side as the others and exit the loop early.  On the other hand the worst case situation should occur with ordered input where we don't find a point on the other side of the line until late in the loop.
+It's important to note that the calculations above do not take into account cases where we're able to break out of the inner loop early when we find points on either side of the line that is being tested.  This means that specific arrangement of points we get as input will play a role in how quickly the algorithm completes.  The best case should be a situation in which the points are completely random, we would quickly find a point that is not on the same side as the others and exit the loop early.  On the other hand the worst case situation should occur with ordered input where we don't find a point on the other side of the line until late in the loop.
   \subsection{QuickHull}
-  QuickHull is a divide and conquer type algorithm so we will use the \textbf{general divide-and-conquer reoccurance} in conjunction with the Master Theorem to analyis it. \textit{[Levitin pg.171]}
+  QuickHull is a divide and conquer type algorithm so we will use the \textbf{general divide-and-conquer re-occurrence} in conjunction with the Master Theorem to analysis it. \textit{[Levitin pg.171]}
 
   \begin{center}
     $T(n) = aT(n/b) + f(n)$
   \end{center}
 
-  Where $a$ is the number of subsets needing to be solved, $b$ is is the size of each subset, and $f(n)$ is the amout of time it takes to divide $n$ into $n/b$i subsets. \\ \\
+  Where $a$ is the number of subsets needing to be solved, $b$ is is the size of each subset, and $f(n)$ is the amount of time it takes to divide $n$ into $n/b$ subsets. \\ \\
 
 \textbf{Best Case (Using Master Theorem)}
 \begin{center}
@@ -180,19 +180,31 @@ It's important to note that the calculations above do not take into account case
   \subsection{Algorithm Correctness}
   When deciding on a strategy to test the correctness of our algorithm we had a few key criteria. We wanted to avoid repeating the steps used in our algorithms, we wanted to be able to use double precision so that we could test for correctness with circular data, and we wanted to use some well tested java libraries. These criteria brought us to the Polygon.contains method in the java.awt library, but the contains method only works on integers, and this would disable our ability to correctly test convex hulls that are in the shape of a circle. We then discovered the Path2D library which supports double precision and has a contains method. The challenge with using the Path2D library comes in building the convex hull. Building the hull requires adding points in the correct order so that each point you add draws the correct line as it would look in the given convex hull. In order to solve this problem we had to sort the convex hull in a circular way so that the path could be drawn clockwise around the convex hull.
   \begin{figure}[H]
-    \includegraphics[width=14cm,height=11cm]{correctness_1.png}
+    \includegraphics[width=15cm,height=12cm]{correctness_1.png}
     \caption{Circular Case}
     \label{fig:correctness_1}
   \end{figure} 
   The code above shows the algorithm for building an array that can be used to draw the convex hull clockwise. First we add the left most point of the convex hull in the first position of the circular array. We start with the left, right, top, and bottom points of the convex hull available, and we use those to add the top left and top right portions of the convex hull to a linked list. We then find the left most element of the list and place it into the next available position of the circular array while removing it from the list. We repeat that step until the list is empty, and add the right point to the next available position. A similar strategy is used to add the bottom portion of the convex hull to the circular array, but the loop portion adds the right most point to the array to continue adding points in the clockwise direction. The code below shows the construction of the convex hull using the Path2D cHull. The path starts with the left most point contained in the first position of the circular array. The rest of the list is iterated through and lines are drawn to each consecutive point. A line is then drawn from the final point in the array to the first point added using the closePath method. With the convex hull drawn we are able to iterate through all the points and make sure each point is contained in the convex hull.
   \begin{figure}[H]
-    \includegraphics[width=14cm,height=7cm]{correctness_2.png}
+    \begin{center}
+    \includegraphics[width=15cm,height=8cm]{correctness_2.png}
+  \end{center}
     \caption{Circular Correctness Test}
     \label{fig:correctness_2}
   \end{figure} 
 
   \subsection{Data Generation}
-  In order to accurately assess the efficiency of our algorithms we came up with two different ways to generate test data: circular points and random points. When given circular points the efficiency of quick hull should decrease significantly, because each time it draws a triangle and searches for points inside the triangle it will find nothing, so the convex hull would be the entire set of points. The random data generated would give closer to average case efficiency, because usually provided points would be closer to random distribution. In order to generate a circular set of points the function below received a count of how many points need to be generated. At the start of the loop degrees is set to 0, and is incremented by 360 divided by the total number of points so that the data will be distributed well around the circle. Each point is given an x value of the radius multiplied by the cos of the current value of degrees, and the y value is generated using the sin function. The random data is generated point by point and uses the Math.random function.
+  In order to accurately assess the efficiency of our algorithms we came up with two different ways to generate test data: circular points and random points. When given circular points the efficiency of quick hull should decrease significantly, because each time it draws a triangle and searches for points inside the triangle it will find nothing, so the convex hull would be the entire set of points. The random data generated would give closer to average case efficiency, because usually provided points would be closer to random distribution.
+\\  
+
+In order to generate a circular set of points the function below received a count of how many points need to be generated. At the start of the loop degrees is set to 0, and is incremented by 360 divided by the total number of points so that the data will be distributed well around the circle. Each point is given an x value of the radius multiplied by the cos of the current value of degrees, and the y value is generated using the sin function. The random data is generated point by point and uses the Math.random function.
+  \begin{figure}[H]
+    \begin{center}
+    \includegraphics[width=14cm,height=2.5cm]{data_gen.png}
+  \end{center}
+    \caption{Data Generator}
+    \label{fig:data_gen}
+  \end{figure} 
 
   \section{Results}
 To confirm that the actual running time of the algorithms matched with the efficiency class of the algorithms we ran our code with varying sizes of input. We used our data generation functions to create random input and circle input for varying values of n, and we used the same data for both the brute force and the quick hull algorithms. We looped through the quick hull and brute force algorithms enough times to see a clear difference between the two algorithms. \\
