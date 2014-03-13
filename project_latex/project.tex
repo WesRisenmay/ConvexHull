@@ -26,9 +26,59 @@
     \label{fig:bruteforce}
   \end{figure} 
   \subsection{QuickHull}
-  \section{Analysis of Complexity}
+  \section{Analysis of Time Complexity}
   \subsection{Brute Force}
+  Our brute force implementation is composed of 3 loops, each of which iterates through every point in the input. The basic operation for our algorithm is calculating the determinant which occurs in the inner most loop.
+  \begin{center}
+    \begin{align*}
+      C(n) &= \sum\limits_{i=1}^n \sum\limits_{i=1}^{n-1} \sum\limits_{i=1}^{n-2} 1 \\
+      C(n) &= (n-2) \cdot \sum\limits_{i=1}^n \sum\limits_{i=1}^{n-1}1 \\ 
+      C(n) &= (n-2)(n-1) \cdot \sum\limits_{i=1}^n 1 \\
+      C(n) &= (n-2)(n-1)n \\
+      C(n) &= n^3 - 3n^2 + 2n \\ \\
+           &O(n^3 -3n^2 +2n) \\
+           &\bm{O(n^3)}
+    \end{align*}
+  \end{center}
+It's important to note that the calculations above do not take into account cases where we're able to break out of the inner loop early when we find points on either side of the line that is being tested.  This means that specific arrangement of points we get as input will play a role in how quickly the algorithm completes.  The best case should be a situation in which the points are completly random, we would quickly find a point that is not on the same side as the others and exit the loop early.  On the other hand the worst case situation should occur with ordered input where we don't find a point on the other side of the line until late in the loop.
   \subsection{QuickHull}
+  QuickHull is a divide and conquer type algorithm so we will use the \textbf{general divide-and-conquer reoccurance} in conjunction with the Master Theorem to analyis it. \textit{[Levitin pg.171]}
+
+  \begin{center}
+    $T(n) = aT(n/b) + f(n)$
+  \end{center}
+
+  Where $a$ is the number of subsets needing to be solved, $b$ is is the size of each subset, and $f(n)$ is the amout of time it takes to divide $n$ into $n/b$i subsets. \\ \\
+
+\textbf{Best Case (Using Master Theorem)}
+\begin{center}
+  \begin{align*}
+    &a = b = 2 &&\text{[partition into two even subsets]} \\
+    &f(n) = n &&\text{[iterate through every point to find pivot]} \\
+    &f(n) \epsilon \Theta(n^1) &&\text{[so in our case $d=1$]} \\\\
+    &\bm{T(n) = 2T(n/2) + n} \\
+    &\bm{\Theta(n\log(n))} &&\text{[since $a=b^1$]} \\
+  \end{align*}
+\end{center}
+\textbf{Worst Case (Recursion Relation)} 
+\begin{center}
+  \begin{align*}
+    T(n) &= T(n-1) + c\cdot n &&\text{[all points on one side of pivot]} \\
+    T(n) &= T(n-2) + c[(n-1) + n] \\
+    T(n) &= T(n-3) + c[(n-3) + (n-2) + (n-1) + n] \\
+    T(n) &= T(n-4) + c[(n-4) + (n-3) + (n-2) + (n-1) + n] \\
+    T(n) &= T(n-i) + c\sum\limits_{j=0}^i (n-j) \\ 
+    T(n) &= T(n-i) + c(n\sum\limits_{j=0}^i1 - \sum\limits_{j=0}^i j) &&\text{[sum rules]}\\ 
+    T(n) &= T(n-i) + c(n(\sum\limits_{j=1}^i1 - 1)  - \sum\limits_{j=1}^i j) &&\text{[sum rules]}\\ 
+    T(n) &= T(n-i) + c(n(i - 1)  - \frac{i(i-1)}{2}) &&\text{[known sums]}\\ 
+    T(n) &= T(n-n) + c(n(n - 1)  - \frac{n(n-1)}{2}) &&\text{[substituting $i=n$, $T(0)=0$]}\\ 
+    T(n) &= c(n^2 - n  - \frac{n^2-n)}{2}) \\ 
+    T(n) &= c(\frac{n^2}{2} - \frac{n}{2}) &&\text{[partial fraction expansion]}\\ 
+         &O(c(\frac{n^2}{2} - \frac{n}{2})) \\
+         &\bm{O(n^2)} &&\text{[can ignore lower order terms/constants]} \\
+  \end{align*}
+\end{center}
+
   \subsection{Expected Outcome}
   \section{Automated Testing}
   \subsection{Algorithm Correctness}
