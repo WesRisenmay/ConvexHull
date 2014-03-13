@@ -220,6 +220,20 @@ would be a factor of n. With 100 elements the factor was only 6, and with 1,000 
 showed us that the performance of an algorithm with a specific efficiency class can vary drastically due
 to implementation details, and although constant factors are ignored in efficiency classes they make a
 big difference in practice.
+\section{Conclusion}
+We encountered a few issues where a lot of time was wasted due to poor planning and not exploring
+our options. Our first attempt at correctness testing mimicked brute force too closely, and we realized
+that comparing the data of our correctness testing and our brute force algorithm could miss certain
+edge cases. Our first attempt at generating a circular set of points was also overly complicated, but
+looking for better options ended with a simpler and more robust algorithm. We learned from this to
+come up with multiple options before deciding on an implementation.
+\\
+
+Comparing the time taken to compute the convex hull using brute force and quick hull showed extreme
+differences, and this solidified the importance of choosing an algorithm of the best known efficiency.
+Most of the code that we have written so far through schooling has been tested on a small scale where
+the difference in efficiency would not be noticeable, but the knowledge of how to analyze the
+complexity of an algorithm and the importance of choosing a good algorithm will be invaluable.
 
 
   %----------------------------------------------------------------------------------------
